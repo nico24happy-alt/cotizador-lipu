@@ -527,7 +527,78 @@ select option{background:#ffffff;color:#1e293b}
 .rh-prefectura-si{color:var(--gold)!important}
 input[readonly]{cursor:default!important}
 @media(max-width:768px){.four-col{grid-template-columns:1fr 1fr}.resumen-grid{grid-template-columns:1fr}.fact-items{grid-template-columns:1fr 1fr}}
+
+/* ─── HISTORIAL PANEL ─── */
+#hist-overlay{
+  display:none;position:fixed;inset:0;z-index:2000;
+  background:rgba(10,20,40,.45);backdrop-filter:blur(2px);
+}
+#hist-overlay.open{display:flex;align-items:stretch}
+#hist-panel{
+  width:min(680px,95vw);margin-left:auto;
+  background:#fff;display:flex;flex-direction:column;
+  box-shadow:-4px 0 24px rgba(0,0,0,.15);
+  animation:slideIn .22s ease;
+}
+@keyframes slideIn{from{transform:translateX(100%)}to{transform:translateX(0)}}
+#hist-header{
+  background:var(--navy);color:#fff;
+  padding:16px 20px;display:flex;align-items:center;gap:10px;
+  flex-shrink:0;
+}
+#hist-header h2{font-size:16px;font-weight:600;flex:1;margin:0}
+#hist-close{
+  background:rgba(255,255,255,.12);border:none;color:#fff;
+  width:30px;height:30px;border-radius:6px;cursor:pointer;
+  font-size:18px;line-height:1;display:flex;align-items:center;justify-content:center;
+}
+#hist-close:hover{background:rgba(255,255,255,.22)}
+#hist-body{flex:1;overflow-y:auto;padding:16px}
+#hist-loading{
+  text-align:center;padding:40px 0;color:var(--muted);font-size:14px;
+}
+#hist-empty{
+  text-align:center;padding:40px 0;color:var(--muted);font-size:14px;display:none;
+}
+.hist-table{width:100%;border-collapse:collapse;font-size:13px}
+.hist-table th{
+  background:var(--navy);color:#fff;font-weight:600;
+  padding:8px 10px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.4px;
+}
+.hist-table th:last-child{text-align:center}
+.hist-table td{
+  padding:9px 10px;border-bottom:1px solid var(--border);
+  vertical-align:middle;
+}
+.hist-table tr:hover td{background:#f8fafc}
+.hist-folio{font-weight:700;color:var(--navy);font-size:12px}
+.hist-cliente{font-weight:500;color:var(--text)}
+.hist-proyecto{color:var(--muted);font-size:11px;margin-top:1px}
+.hist-fecha{font-size:11px;color:var(--muted);white-space:nowrap}
+.hist-pref-si{
+  background:var(--gold);color:var(--navy);
+  font-size:9px;font-weight:700;padding:2px 6px;border-radius:10px;
+  letter-spacing:.4px;text-transform:uppercase;
+}
+.hist-pref-no{color:var(--muted);font-size:11px}
+.btn-hist-ver{
+  background:var(--navy);color:#fff;border:none;border-radius:6px;
+  padding:5px 12px;font-size:11px;font-weight:600;cursor:pointer;
+  white-space:nowrap;
+}
+.btn-hist-ver:hover{background:#1a4a82}
+#btn-historial{
+  margin-left:auto;
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);
+  color:#fff;border-radius:7px;
+  padding:6px 13px;font-size:12px;font-weight:600;cursor:pointer;
+  display:flex;align-items:center;gap:6px;
+  font-family:inherit;
+}
+#btn-historial:hover{background:rgba(255,255,255,.2)}
+
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -536,6 +607,37 @@ input[readonly]{cursor:default!important}
   <img src="logo.png" style="height:36px;width:auto;object-fit:contain;border-radius:4px">
   <div class="logo-text">LIPU <span>Especiales</span></div>
   <div class="badge-dir">Dirección Comercial</div>
+  <button id="btn-historial" onclick="abrirHistorial()">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="3" cy="6" r="1.5" fill="currentColor" stroke="none"/><circle cx="3" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="3" cy="18" r="1.5" fill="currentColor" stroke="none"/></svg>
+    Historial
+  </button>
+</div>
+
+<!-- HISTORIAL PANEL -->
+<div id="hist-overlay" onclick="e=>e.target===this&&cerrarHistorial()">
+  <div id="hist-panel">
+    <div id="hist-header">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <h2>Historial de cotizaciones</h2>
+      <button id="hist-close" onclick="cerrarHistorial()">×</button>
+    </div>
+    <div id="hist-body">
+      <div id="hist-loading">Cargando cotizaciones…</div>
+      <div id="hist-empty">No hay cotizaciones guardadas aún.</div>
+      <table class="hist-table" id="hist-tbl" style="display:none">
+        <thead>
+          <tr>
+            <th>Folio</th>
+            <th>Cliente / Proyecto</th>
+            <th>Unidades</th>
+            <th>Fecha</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody id="hist-tbody"></tbody>
+      </table>
+    </div>
+  </div>
 </div>
 
 <!-- PROGRESS BAR -->
@@ -1803,6 +1905,34 @@ function setIdaVuelta(val) {
 // ════════════════════════════════════════════════════════════
 // PASO 4: COTIZACIÓN
 // ════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════
+// SUPABASE
+// ════════════════════════════════════════════════════════════
+const _sb = supabase.createClient(
+  'https://cgxyrchzmrbhlcrajgzh.supabase.co',
+  'sb_publishable_oA3dMHJPy_0omKXd61HUiw_k2D_JX_5'
+);
+
+async function guardarCotizacion() {
+  try {
+    // Serializar sin _desgloseEst (propiedad UI-only)
+    const payload = JSON.parse(JSON.stringify(cotizacion, (key, val) =>
+      key === '_desgloseEst' ? undefined : val
+    ));
+    const { error } = await _sb.from('cotizaciones').insert([{
+      folio:        cotizacion.folio,
+      cliente:      cotizacion.cliente || null,
+      proyecto:     cotizacion.proyecto || null,
+      prefectura:   cotizacion.prefectura || 'NO',
+      datos:        payload,
+      creado_en:    new Date().toISOString()
+    }]);
+    if (error) console.warn('Supabase insert error:', error.message);
+  } catch(e) {
+    console.warn('guardarCotizacion error:', e);
+  }
+}
+
 function generarCotizacion() {
   // Capturar horas antes de cualquier otra cosa
   cotizacion.operacion.horaEntrada = (document.getElementById('f-entrada').value||'').trim();
@@ -1815,6 +1945,7 @@ function generarCotizacion() {
     const ymd = d.toISOString().slice(0,10).replace(/-/g,'');
     cotizacion.folio = `FIJO-${ymd}-${String(Math.floor(Math.random()*900)+100)}`;
   }
+  guardarCotizacion();
   goToStep(4);
 }
 
@@ -2308,6 +2439,152 @@ document.addEventListener('DOMContentLoaded', () => {
   initMainMap();
   renderRutas();
 });
+
+// ════════════════════════════════════════════════════════════
+// HISTORIAL
+// ════════════════════════════════════════════════════════════
+function abrirHistorial() {
+  const overlay = document.getElementById('hist-overlay');
+  overlay.classList.add('open');
+  overlay.onclick = e => { if (e.target === overlay) cerrarHistorial(); };
+  cargarHistorial();
+}
+
+function cerrarHistorial() {
+  document.getElementById('hist-overlay').classList.remove('open');
+}
+
+async function cargarHistorial() {
+  const loading = document.getElementById('hist-loading');
+  const empty   = document.getElementById('hist-empty');
+  const tbl     = document.getElementById('hist-tbl');
+  const tbody   = document.getElementById('hist-tbody');
+
+  loading.style.display = 'block';
+  empty.style.display   = 'none';
+  tbl.style.display     = 'none';
+  tbody.innerHTML       = '';
+
+  try {
+    // Include datos so we can build the units summary
+    const { data, error } = await _sb
+      .from('cotizaciones')
+      .select('id, folio, cliente, proyecto, creado_en, datos')
+      .order('creado_en', { ascending: false })
+      .limit(100);
+
+    loading.style.display = 'none';
+
+    if (error) {
+      empty.textContent = 'Error al cargar: ' + error.message;
+      empty.style.display = 'block';
+      return;
+    }
+    if (!data || data.length === 0) {
+      empty.style.display = 'block';
+      return;
+    }
+
+    const _tipoLabels = {sprinter:'Sprinter', cam30:'Camión 30 pax', cam45:'Camión 45 pax'};
+
+    data.forEach(row => {
+      const fecha = row.creado_en
+        ? new Date(row.creado_en).toLocaleDateString('es-MX',
+            {year:'numeric', month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'})
+        : '—';
+
+      // Build units summary from datos.unidades
+      let unidadesHtml = '<span style="color:var(--muted);font-size:11px">—</span>';
+      const unidades = row.datos && row.datos.unidades;
+      if (unidades && unidades.length > 0) {
+        // Group by tipo, sum cantidad
+        const grupos = {};
+        unidades.forEach(u => {
+          const key = u.tipo || 'sprinter';
+          grupos[key] = (grupos[key] || 0) + (u.cantidad || 1);
+        });
+        const partes = Object.entries(grupos)
+          .map(([tipo, cant]) => `${cant}× ${_tipoLabels[tipo] || tipo}`);
+        unidadesHtml = `<span style="font-size:12px;color:var(--text)">${partes.join(', ')}</span>`;
+      }
+
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><div class="hist-folio">${row.folio || '—'}</div></td>
+        <td>
+          <div class="hist-cliente">${row.cliente || 'Sin nombre'}</div>
+          <div class="hist-proyecto">${row.proyecto || ''}</div>
+        </td>
+        <td>${unidadesHtml}</td>
+        <td class="hist-fecha">${fecha}</td>
+        <td style="text-align:center">
+          <button class="btn-hist-ver" data-id="${row.id}">Ver</button>
+        </td>`;
+
+      // Attach click listener directly — avoids fragile onclick attribute selectors
+      tr.querySelector('.btn-hist-ver').addEventListener('click', function() {
+        verCotizacion(row.id, this);
+      });
+
+      tbody.appendChild(tr);
+    });
+
+    tbl.style.display = 'table';
+  } catch(e) {
+    loading.style.display = 'none';
+    empty.textContent = 'Error inesperado: ' + e.message;
+    empty.style.display = 'block';
+  }
+}
+
+async function verCotizacion(id, btn) {
+  if (btn) { btn.textContent = '…'; btn.disabled = true; }
+
+  try {
+    const { data, error } = await _sb
+      .from('cotizaciones')
+      .select('datos')
+      .eq('id', id)
+      .single();
+
+    if (error || !data || !data.datos) {
+      alert('No se pudo cargar la cotización.');
+      if (btn) { btn.textContent = 'Ver'; btn.disabled = false; }
+      return;
+    }
+
+    const saved = data.datos;
+
+    // Restore all top-level fields
+    cotizacion.folio       = saved.folio       || '';
+    cotizacion.folioManual = saved.folioManual  || '';
+    cotizacion.cliente     = saved.cliente      || '';
+    cotizacion.proyecto    = saved.proyecto     || '';
+    cotizacion.prefectura  = saved.prefectura   || 'NO';
+    cotizacion.rutas       = Array.isArray(saved.rutas)    ? saved.rutas    : [];
+    cotizacion.unidades    = Array.isArray(saved.unidades) ? saved.unidades : [];
+
+    // Deep-merge operacion so no sub-field is lost
+    Object.assign(cotizacion.operacion, {
+      fechaInicio:   '',
+      fechaFin:      '',
+      diasSemana:    [1,2,3,4,5],
+      idaVuelta:     false,
+      horaEntrada:   '',
+      horaSalida:    '',
+      totalDias:     0,
+      observaciones: ''
+    }, saved.operacion || {});
+
+    cerrarHistorial();
+    currentStep = 3; // bypass step guard so goToStep(4) no quede bloqueado
+    goToStep(4);
+  } catch(e) {
+    alert('Error al cargar: ' + e.message);
+    if (btn) { btn.textContent = 'Ver'; btn.disabled = false; }
+  }
+}
+
 </script>
 </body>
 </html>
