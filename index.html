@@ -94,8 +94,7 @@ body{font-family:'DM Sans',sans-serif;font-weight:400;background:var(--bg);color
   background:#ffffff;
 }
 .ruta-map-col{
-  width:60%;position:sticky;top:112px;
-  height:calc(100vh - 112px);flex-shrink:0;position:relative;
+  width:60%;height:calc(100vh - 112px);flex-shrink:0;position:relative;
 }
 #main-map{width:100%;height:100%}
 
@@ -483,7 +482,89 @@ select option{background:#ffffff;color:#1e293b}
 .uc-label{font-size:13px;font-weight:700;color:var(--navy)}
 .uc-tipo-badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:12px;font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase}
 .uc-tipo-fijo{background:#dbeafe;color:#1e40af}
-.uc-tipo-especial{background:#fce7f3;color:#9d174d}
+.uc-tipo-combinado{background:#fef3c7;color:#92400e}
+/* Per-day config toggle */
+.pdc-sw{position:relative;width:34px;height:18px;flex-shrink:0;display:inline-block}
+.pdc-sw input{opacity:0;position:absolute;width:0;height:0}
+.pdc-slider{position:absolute;inset:0;background:#cbd5e1;border-radius:9px;transition:background .2s;cursor:pointer}
+.pdc-slider::before{content:'';position:absolute;width:14px;height:14px;left:2px;top:2px;background:#fff;border-radius:50%;transition:transform .2s;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.pdc-sw input:checked+.pdc-slider{background:var(--navy)}
+.pdc-sw input:checked+.pdc-slider::before{transform:translateX(16px)}
+/* Per-day grid */
+.por-dia-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-top:6px;padding:10px;background:#f0f9ff;border:1px solid #bfdbfe;border-radius:8px}
+.dia-col{display:flex;flex-direction:column;align-items:center;gap:4px}
+.dia-hdr{font-size:10px;font-weight:700;text-transform:uppercase;color:#475569;letter-spacing:.04em}
+.dia-toggle-btn{width:28px;height:28px;border-radius:7px;border:1.5px solid var(--border);background:#f8fafc;cursor:pointer;font-size:11px;font-weight:700;color:var(--muted);transition:all .15s;display:flex;align-items:center;justify-content:center;padding:0}
+.dia-toggle-btn.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.dia-viajes-inp{width:100%;max-width:38px;padding:3px 2px;text-align:center;font-size:12px;font-weight:600;border:1.5px solid var(--border);border-radius:6px;font-family:inherit;background:#fff;color:#1e293b;outline:none;transition:border-color .15s}
+.dia-viajes-inp:focus{border-color:var(--navy)}
+/* ─── DÍAS ACTIVOS CHIPS (global paso 1) ─── */
+.dias-activos-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.dia-chip-global{display:inline-flex;align-items:center;justify-content:center;width:46px;height:34px;border-radius:8px;border:1.5px solid var(--border);font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .15s;user-select:none;background:#f8fafc}
+.dia-chip-global.on{background:var(--navy);border-color:var(--navy);color:#ffffff}
+/* ─── VARÍA POR DÍA TABS ─── */
+.vpd-tabs{display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:10px;overflow-x:auto;flex-shrink:0}
+.vpd-tab{padding:8px 14px;font-size:12px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap;font-family:inherit;flex-shrink:0;transition:color .15s}
+.vpd-tab.active{color:var(--navy);border-bottom-color:var(--navy)}
+.vpd-tab:hover:not(.active){color:var(--text)}
+.vpd-tab.incomplete::after{content:'⚠';font-size:9px;color:#f59e0b;margin-left:3px}
+/* ─── VARÍA POR DÍA COPY ROW ─── */
+.vpd-copy-row{display:flex;align-items:center;gap:8px;padding:8px 10px;background:#f8fafc;border:1px solid var(--border);border-radius:8px;margin-bottom:12px;flex-wrap:wrap}
+.vpd-copy-row label{font-size:11px;font-weight:600;color:var(--muted);white-space:nowrap}
+.vpd-copy-row select{flex:1;min-width:90px;width:auto;padding:5px 8px;font-size:12px;border:1.5px solid var(--border);border-radius:6px;background:#fff;font-family:inherit}
+.vpd-copy-btn{padding:5px 12px;background:var(--navy);color:#fff;border:none;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap}
+.vpd-copy-btn:hover{background:#1a4a82}
+/* ─── PER-DAY REPORT ─── */
+.vpd-report-day{border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:10px}
+.vpd-report-day-hdr{background:var(--navy);color:#fff;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:8px 14px;display:flex;justify-content:space-between;align-items:center}
+.vpd-report-day-body{padding:12px 14px}
+/* ─── TIME PICKER ─── */
+.tp-wrap{position:relative}
+.tp-trigger{
+  display:flex;align-items:center;gap:9px;padding:9px 12px;
+  border:1.5px solid var(--border);border-radius:8px;
+  background:#f8fafc;cursor:pointer;user-select:none;
+  font-family:'DM Sans',sans-serif;font-size:14px;color:#1e293b;
+  transition:border-color .15s,box-shadow .15s;
+}
+.tp-trigger:hover{border-color:var(--navy)}
+.tp-wrap.tp-open .tp-trigger{
+  border-color:var(--navy);
+  box-shadow:0 0 0 3px rgba(15,45,82,.1);
+  background:#ffffff;
+}
+.tp-trigger-time{flex:1;font-weight:500;letter-spacing:.04em;color:#1e293b}
+.tp-trigger-ph{flex:1;color:var(--muted)}
+.tp-chevron{color:var(--muted);flex-shrink:0;transition:transform .2s}
+.tp-wrap.tp-open .tp-chevron{transform:rotate(180deg)}
+.tp-dropdown{
+  position:absolute;top:calc(100% + 4px);left:0;right:0;z-index:3500;
+  background:#ffffff;border:1.5px solid var(--border);border-radius:10px;
+  box-shadow:0 8px 28px rgba(0,0,0,.14);overflow:hidden;display:none;
+}
+.tp-wrap.tp-open .tp-dropdown{display:block}
+.tp-cols{display:grid;grid-template-columns:1fr 22px 1fr}
+.tp-col{overflow-y:auto;max-height:208px;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.tp-col::-webkit-scrollbar{width:3px}
+.tp-col::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.tp-col-hdr{
+  position:sticky;top:0;z-index:1;
+  text-align:center;font-size:9px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.08em;color:var(--muted);
+  padding:7px 0 6px;background:#fff;border-bottom:1px solid var(--border);
+}
+.tp-item{
+  padding:8px 0;cursor:pointer;font-size:13.5px;font-weight:500;
+  text-align:center;color:#1e293b;transition:background .08s;
+}
+.tp-item:hover:not(.tp-sel){background:#f0f9ff;color:var(--navy)}
+.tp-item.tp-sel{background:var(--navy);color:#ffffff;font-weight:700}
+.tp-colon{
+  display:flex;align-items:center;justify-content:center;
+  font-size:17px;font-weight:700;color:var(--navy);
+  background:#f8fafc;
+  border-left:1px solid var(--border);border-right:1px solid var(--border);
+}
 .fact-items{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:12px;background:#f8fafc;border-radius:8px;border:1px solid var(--border)}
 .fact-item{background:white;border:1px solid var(--border);border-radius:6px;padding:9px 10px}
 .fact-item.fi-total{background:#f0fdf4;border-color:#bbf7d0}
@@ -677,21 +758,13 @@ input[readonly]{cursor:default!important}
         <label>Proyecto / servicio</label>
         <input type="text" id="f-proyecto" placeholder="Ej. Traslado planta Vallejo" oninput="cotizacion.proyecto=this.value">
       </div>
-      <div class="two-col">
-        <div class="field-group">
-          <label>Folio (dejar vacío para auto-generar)</label>
-          <input type="text" id="f-folio" placeholder="Ej. FIJO-2024-001" oninput="cotizacion.folioManual=this.value.trim()">
-        </div>
-        <div class="field-group">
-          <label>Prefectura</label>
-          <select id="f-prefectura" onchange="cotizacion.prefectura=this.value">
-            <option value="NO">NO</option>
-            <option value="SI">SÍ</option>
-          </select>
-        </div>
+      <div class="field-group">
+        <label>Folio (dejar vacío para auto-generar)</label>
+        <input type="text" id="f-folio" placeholder="Ej. FIJO-2024-001" oninput="cotizacion.folioManual=this.value.trim()">
       </div>
 
-      <div class="sec-label">Rutas del servicio</div>
+      <div id="vpd-tabs-paso1" style="display:none"></div>
+      <div class="sec-label" id="sec-rutas-label">Rutas del servicio</div>
       <div id="rutas-list"></div>
       <button class="btn-add-parada" id="btn-add-ruta" onclick="agregarRuta()">+ Agregar ruta</button>
       <div id="total-dist-chip">
@@ -699,7 +772,30 @@ input[readonly]{cursor:default!important}
         <span class="chip-eta" id="total-eta-display"></span>
       </div>
 
-      <div class="nav-buttons" style="margin-top:24px">
+      <div class="field-group" style="margin-top:16px;margin-bottom:4px">
+        <label>Tipo de viaje</label>
+        <div class="iv-toggle">
+          <button class="iv-pill active" id="iv-solo-ida" onclick="setIdaVuelta(false)">Solo ida</button>
+          <button class="iv-pill" id="iv-ida-vuelta" onclick="setIdaVuelta(true)">Ida y vuelta</button>
+        </div>
+        <div class="iv-note" id="iv-note">Ida y vuelta duplica el kilometraje por mes</div>
+      </div>
+
+      <div class="sec-label" style="margin-top:14px">Días activos del servicio</div>
+      <div id="dias-activos-chips" class="dias-activos-chips"></div>
+
+      <div style="display:flex;align-items:center;gap:10px;margin-top:4px;margin-bottom:4px;padding:9px 12px;background:#f8fafc;border:1px solid var(--border);border-radius:8px">
+        <label style="display:inline-flex;align-items:center;gap:8px;cursor:pointer;user-select:none;flex:1">
+          <span class="pdc-sw">
+            <input type="checkbox" id="toggle-varia-por-dia" onchange="setVariaPorDia(this.checked)">
+            <span class="pdc-slider"></span>
+          </span>
+          <span style="font-size:13px;font-weight:600;color:var(--text)">¿El servicio varía por día?</span>
+        </label>
+        <span style="font-size:11px;color:var(--muted);font-style:italic">Rutas y unidades distintas por día</span>
+      </div>
+
+      <div class="nav-buttons" style="margin-top:16px">
         <span style="flex:0"></span>
         <button class="btn btn-primary" id="btn-paso1-next" onclick="goToStep(2)" disabled>Siguiente →</button>
       </div>
@@ -717,6 +813,7 @@ input[readonly]{cursor:default!important}
       <div class="step-heading">Unidades del servicio</div>
       <div class="step-subheading">Configura cada vehículo con su operación, costos y características de ruta fija.</div>
       <div class="no-km-warning" id="no-km-warn" style="display:none"></div>
+      <div id="vpd-tabs-paso2"></div>
       <div id="unidades-container"></div>
       <button class="btn-add-parada" onclick="agregarUnidad()">+ Agregar unidad</button>
       <div class="total-card hidden" id="total-unidades-card">
@@ -749,22 +846,40 @@ input[readonly]{cursor:default!important}
         <div class="two-col" style="margin-bottom:16px">
           <div class="field-group" style="margin-bottom:0">
             <label>Hora de entrada</label>
-            <input type="text" id="f-entrada" placeholder="07:00" maxlength="5"
-              oninput="onHoraChange('entrada',this.value)">
+            <div class="tp-wrap" id="tp-wrap-entrada">
+              <div class="tp-trigger" onclick="tpToggle('entrada')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--navy);flex-shrink:0"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <span id="tp-disp-entrada" class="tp-trigger-ph">Seleccionar</span>
+                <svg class="tp-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+              <input type="hidden" id="f-entrada">
+              <div class="tp-dropdown">
+                <div class="tp-cols">
+                  <div class="tp-col" id="tp-col-h-entrada"></div>
+                  <div class="tp-colon">:</div>
+                  <div class="tp-col" id="tp-col-m-entrada"></div>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="field-group" style="margin-bottom:0">
             <label>Hora de salida</label>
-            <input type="text" id="f-salida" placeholder="18:00" maxlength="5"
-              oninput="onHoraChange('salida',this.value)">
+            <div class="tp-wrap" id="tp-wrap-salida">
+              <div class="tp-trigger" onclick="tpToggle('salida')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--navy);flex-shrink:0"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <span id="tp-disp-salida" class="tp-trigger-ph">Seleccionar</span>
+                <svg class="tp-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+              <input type="hidden" id="f-salida">
+              <div class="tp-dropdown">
+                <div class="tp-cols">
+                  <div class="tp-col" id="tp-col-h-salida"></div>
+                  <div class="tp-colon">:</div>
+                  <div class="tp-col" id="tp-col-m-salida"></div>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="field-group" style="margin-bottom:0">
-          <label>Tipo de viaje</label>
-          <div class="iv-toggle">
-            <button class="iv-pill active" id="iv-solo-ida" onclick="setIdaVuelta(false)">Solo ida</button>
-            <button class="iv-pill" id="iv-ida-vuelta" onclick="setIdaVuelta(true)">Ida y vuelta</button>
-          </div>
-          <div class="iv-note" id="iv-note">Ida y vuelta duplica el kilometraje por mes</div>
         </div>
       </div>
       <div class="card">
@@ -790,12 +905,7 @@ input[readonly]{cursor:default!important}
         <div class="rh-folio" id="r-folio">FIJO-00000000-000</div>
         <div class="rh-client" id="r-cliente">—</div>
         <div class="rh-project" id="r-proyecto">—</div>
-        <div class="rh-meta">
-          <div class="rh-meta-item">
-            <span class="rh-ml">Prefectura</span>
-            <span class="rh-mv" id="r-prefectura">NO</span>
-          </div>
-        </div>
+        <div class="rh-meta" id="r-meta-escolar"></div>
         <div class="rh-date" id="r-fecha">Emisión: —</div>
       </div>
 
@@ -827,7 +937,7 @@ input[readonly]{cursor:default!important}
                 <th colspan="7" class="th-op">Operación y costos</th>
               </tr>
               <tr>
-                <th class="sh-id">Tipo serv.</th><th class="sh-id">Características</th><th class="sh-id">Tipo unidad</th><th class="sh-id" style="text-align:center">Cant.</th>
+                <th class="sh-id">Tipo serv.</th><th class="sh-id">Tipo unidad</th><th class="sh-id">Antigüedad</th><th class="sh-id" style="text-align:center">Cant.</th>
                 <th class="sh-op" style="text-align:center">Días/sem</th><th class="sh-op" style="text-align:center">Viajes/día</th>
                 <th class="sh-op" style="text-align:center">Viajes sem.</th><th class="sh-op" style="text-align:center">Días anuales</th>
                 <th class="sh-op" style="text-align:right">Km/mes</th><th class="sh-op" style="text-align:center">Km muertos/día</th><th class="sh-op" style="text-align:center">% Vacío</th>
@@ -909,6 +1019,9 @@ const cotizacion = {
     }
   ],
   unidades: [],
+  diasActivos: [1,2,3,4,5],
+  variaPorDia: false,
+  perDia: {},
   operacion: {
     fechaInicio: '', fechaFin: '',
     diasSemana: [1,2,3,4,5],
@@ -932,16 +1045,36 @@ let currentStep = 1;
 
 const defCostos = {sprinter:18, cam30:28, cam45:35};
 const tipoLabels = {sprinter:'Sprinter 16 pax', cam30:'Camión 30 pax', cam45:'Camión 45 pax'};
+const antiguedadLabels = {nueva:'Nueva', '3anios':'3 años', '5anios':'5 años', '10anios':'10 años'};
 let unidadCount = 0;
+let diaActivoPaso1 = 1;
+let diaActivoPaso2 = 1;
+const VPD_NOMBRES = ['','Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
+
+function defaultDiasPorDia() {
+  return [
+    {dia:1,nombre:'Lun',activo:true,viajes:1},
+    {dia:2,nombre:'Mar',activo:true,viajes:1},
+    {dia:3,nombre:'Mié',activo:true,viajes:1},
+    {dia:4,nombre:'Jue',activo:true,viajes:1},
+    {dia:5,nombre:'Vie',activo:true,viajes:1},
+    {dia:6,nombre:'Sáb',activo:false,viajes:0},
+    {dia:7,nombre:'Dom',activo:false,viajes:0}
+  ];
+}
 
 function newUnidad() {
   return {
     id: unidadCount++, tipoServicio:'FIJO', caracteristicas:'', tipo:'sprinter', cantidad:1,
+    antiguedad:'nueva',
     diasOperacionSemana:5, viajesDiarios:1, diasOperacionAnual:365,
+    configPorDia:false, diasPorDia:defaultDiasPorDia(),
     kmTotalesMes:0, porcentajeVacio:30, casetasMensuales:0,
     precioCombustibleKm:2.83, costoPorKm:18,
     kmMuertoIda:15, kmMuertoVuelta:15,
-    kmOverride:false
+    kmOverride:false,
+    destinoCombinado:null, nombreDestinoCombinado:'', combAutoset:false,
+    esServicioEscolar:'NO', requierePrefectura:'NO'
   };
 }
 
@@ -959,7 +1092,10 @@ function calcUnidad(u) {
   const { diasOperacionSemana, viajesDiarios, diasOperacionAnual,
           kmTotalesMes, porcentajeVacio, casetasMensuales,
           precioCombustibleKm, costoPorKm } = u;
-  const viajesSemanales = u.diasOperacionSemana * u.viajesDiarios;
+  const dias = u.diasPorDia || defaultDiasPorDia();
+  const viajesSemanales = (u.configPorDia && u.diasPorDia)
+    ? dias.filter(d => d.activo).reduce((s, d) => s + (d.viajes || 0), 0)
+    : u.diasOperacionSemana * u.viajesDiarios;
   const semMes = (u.diasOperacionAnual / 365) * (52 / 12);
   const viajesMensuales = viajesSemanales * semMes;
   const precioServicioKm = Math.max(0, u.costoPorKm - u.precioCombustibleKm);
@@ -979,8 +1115,9 @@ function calcUnidad(u) {
 }
 
 function calcResumenGeneral() {
-  if (!cotizacion.unidades.length) return null;
-  const datos = cotizacion.unidades.map(u => ({ u, c: calcUnidad(u) }));
+  const allU = getAllUnidades();
+  if (!allU.length) return null;
+  const datos = allU.map(u => ({ u, c: calcUnidad(u) }));
   const montoTotalMensual = datos.reduce((s,d)=>s+d.c.facturacionMensual,0);
   const montoMensualServicio = datos.reduce((s,d)=>s+d.c.facturacionMensualServicio,0);
   const montoMensualCombustible = datos.reduce((s,d)=>s+d.c.facturacionMensualCombustible,0);
@@ -1370,7 +1507,11 @@ function eliminarRuta(rutaId) {
     delete mapData[rutaId];
   }
 
-  cotizacion.rutas = cotizacion.rutas.filter(r => r.id !== rutaId);
+  const newRutas = cotizacion.rutas.filter(r => r.id !== rutaId);
+  cotizacion.rutas = newRutas;
+  if (cotizacion.variaPorDia && cotizacion.perDia[diaActivoPaso1]) {
+    cotizacion.perDia[diaActivoPaso1].rutas = newRutas;
+  }
   if (rutaAbiertaId === rutaId) {
     rutaAbiertaId = cotizacion.rutas[0].id;
   }
@@ -1511,6 +1652,13 @@ function selectResult(tipo, place, nombre) {
   const el = document.getElementById('inp-' + tipo);
   if (el) el.value = nombre;
   closeDropdown(tipo);
+  // Handle unit combined destination (ucomb-{unitId})
+  if (tipo.startsWith('ucomb-')) {
+    const uid = parseInt(tipo.replace('ucomb-', ''));
+    const u = cotizacion.unidades.find(u => u.id === uid);
+    if (u) { u.destinoCombinado = [lat, lng]; u.nombreDestinoCombinado = nombre; u.combAutoset = false; }
+    return;
+  }
   colocarPin(tipo, lat, lng, nombre);
 }
 
@@ -1556,13 +1704,17 @@ document.addEventListener('click', e => {
 // VALIDACIONES
 // ════════════════════════════════════════════════════════════
 function validarPaso1() {
-  // At least 1 ruta with both origen AND destino
-  const ok = cotizacion.rutas.some(r => r.puntos.origen && r.puntos.destino);
+  let ok;
+  if (cotizacion.variaPorDia) {
+    ok = cotizacion.diasActivos.every(d => dayHasRoute(d));
+  } else {
+    ok = cotizacion.rutas.some(r => r.puntos.origen && r.puntos.destino);
+  }
   document.getElementById('btn-paso1-next').disabled = !ok;
 }
 
 function validarPaso2() {
-  document.getElementById('btn-paso2-next').disabled = cotizacion.unidades.length === 0;
+  document.getElementById('btn-paso2-next').disabled = getAllUnidades().length === 0;
 }
 
 function validarPaso3() {
@@ -1630,52 +1782,92 @@ function renderDesgloseEst(u) {
     </div>`;
 }
 
+function autoSetCombinado(uid) {
+  const u = cotizacion.unidades.find(u => u.id === uid);
+  if (!u || u.tipoServicio !== 'COMBINADO') return;
+  const ruta0 = cotizacion.rutas[0];
+  if (!ruta0) return;
+  const idaVuelta = cotizacion.operacion.idaVuelta;
+  // Solo ida → destino de la ruta; Ida y vuelta → origen de la ruta
+  if (!idaVuelta) {
+    u.destinoCombinado = ruta0.puntos.destino || null;
+    u.nombreDestinoCombinado = ruta0.nombresRuta.destino || '';
+  } else {
+    u.destinoCombinado = ruta0.puntos.origen || null;
+    u.nombreDestinoCombinado = ruta0.nombresRuta.origen || '';
+  }
+  u.combAutoset = true;
+}
+
+function setCombAutoset(uid, val) {
+  const u = cotizacion.unidades.find(u => u.id === uid);
+  if (!u) return;
+  if (val) { autoSetCombinado(uid); }
+  else { u.combAutoset = false; }
+  renderUnidades();
+}
+
+function toggleDiaActivo(uid, idx) {
+  const u = cotizacion.unidades.find(u => u.id === uid);
+  if (!u || !u.diasPorDia) return;
+  u.diasPorDia[idx].activo = !u.diasPorDia[idx].activo;
+  if (!u.diasPorDia[idx].activo) u.diasPorDia[idx].viajes = 0;
+  else if (u.diasPorDia[idx].viajes === 0) u.diasPorDia[idx].viajes = 1;
+  u.kmOverride = false;
+  renderUnidades();
+}
+
+function setDiaViajes(uid, idx, val) {
+  const u = cotizacion.unidades.find(u => u.id === uid);
+  if (!u || !u.diasPorDia) return;
+  u.diasPorDia[idx].viajes = val;
+  u.kmOverride = false;
+  renderUnidades();
+}
+
 function renderUnidades() {
+  renderVpdTabsPaso2();
   const c = document.getElementById('unidades-container');
   c.innerHTML = '';
   cotizacion.unidades.forEach((u, idx) => {
-    const tipoBadgeCls = u.tipoServicio==='FIJO' ? 'uc-tipo-fijo' : 'uc-tipo-especial';
-    const viajesSem = (u.diasOperacionSemana * u.viajesDiarios).toFixed(2);
+    if (!u.diasPorDia) u.diasPorDia = defaultDiasPorDia();
+    if (!u.antiguedad) u.antiguedad = 'nueva';
+    if (!u.destinoCombinado) u.destinoCombinado = null;
+    if (!u.nombreDestinoCombinado) u.nombreDestinoCombinado = '';
+    const tipoBadgeCls = u.tipoServicio==='FIJO' ? 'uc-tipo-fijo' : 'uc-tipo-combinado';
     const semMes = (u.diasOperacionAnual / 365) * (52 / 12);
     const ivMult = cotizacion.operacion.idaVuelta ? 2 : 1;
-    const kmRuta = Math.round(totalKmRutas() * u.diasOperacionSemana * u.viajesDiarios * semMes * ivMult);
-    const kmMuertos = Math.round((u.kmMuertoIda + u.kmMuertoVuelta) * u.diasOperacionSemana * semMes);
+    const dias = u.diasPorDia || defaultDiasPorDia();
+    const viajesSemNum = u.configPorDia
+      ? dias.filter(d => d.activo).reduce((s, d) => s + (d.viajes || 0), 0)
+      : u.diasOperacionSemana * u.viajesDiarios;
+    const viajesSem = viajesSemNum.toFixed(2);
+    const diasActivosNum = u.configPorDia
+      ? dias.filter(d => d.activo).length
+      : u.diasOperacionSemana;
+    const kmRuta = Math.round(totalKmRutas() * viajesSemNum * semMes * ivMult);
+    const kmMuertos = Math.round((u.kmMuertoIda + u.kmMuertoVuelta) * diasActivosNum * semMes);
     const kmAuto = kmRuta + kmMuertos;
     if (!u.kmOverride && kmAuto > 0) u.kmTotalesMes = kmAuto;
     const el = document.createElement('div');
     el.className = 'unit-card';
     el.style.position = 'relative';
-    el.innerHTML = `
-      <div class="uc-top">
-        <span class="uc-label">Unidad ${idx+1} — <span class="uc-tipo-badge ${tipoBadgeCls}">${u.tipoServicio}</span></span>
-        <button class="btn-del-unit" style="position:static" onclick="eliminarUnidad(${u.id})">×</button>
+
+    const porDiaGridHtml = `
+      <div class="por-dia-grid">
+        ${dias.map((d, didx) => `
+          <div class="dia-col">
+            <div class="dia-hdr">${d.nombre}</div>
+            <button type="button" class="dia-toggle-btn ${d.activo?'on':''}"
+              onclick="toggleDiaActivo(${u.id},${didx})">${d.activo?'✓':'—'}</button>
+            ${d.activo
+              ? `<input class="dia-viajes-inp" type="number" value="${d.viajes}" min="0" step="0.5" onchange="setDiaViajes(${u.id},${didx},+this.value)">`
+              : `<div style="height:26px"></div>`}
+          </div>`).join('')}
       </div>
-      <div class="three-col">
-        <div class="field-group" style="margin-bottom:10px">
-          <label>Tipo de servicio</label>
-          <select onchange="onUnidadChange(${u.id},'tipoServicio',this.value)">
-            <option value="FIJO" ${u.tipoServicio==='FIJO'?'selected':''}>FIJO</option>
-            <option value="ESPECIAL" ${u.tipoServicio==='ESPECIAL'?'selected':''}>ESPECIAL</option>
-          </select>
-        </div>
-        <div class="field-group" style="margin-bottom:10px">
-          <label>Tipo de unidad</label>
-          <select onchange="onUnidadChange(${u.id},'tipo',this.value)">
-            <option value="sprinter" ${u.tipo==='sprinter'?'selected':''}>Sprinter 16 pax</option>
-            <option value="cam30" ${u.tipo==='cam30'?'selected':''}>Camión 30 pax</option>
-            <option value="cam45" ${u.tipo==='cam45'?'selected':''}>Camión 45 pax</option>
-          </select>
-        </div>
-        <div class="field-group" style="margin-bottom:10px">
-          <label>Cantidad</label>
-          <input type="number" value="${u.cantidad}" min="1" onchange="onUnidadChange(${u.id},'cantidad',+this.value)">
-        </div>
-      </div>
-      <div class="field-group" style="margin-bottom:12px">
-        <label>Características de la unidad</label>
-        <input type="text" value="${escHtml(u.caracteristicas||'')}" placeholder="Ej: CAMIONETA-SPRINTER-10 AÑOS" onchange="onUnidadChange(${u.id},'caracteristicas',this.value)">
-      </div>
-      <div class="sec-label" style="margin-top:4px">Operación</div>
+      <div class="fi-auto" style="margin-top:4px">${viajesSem} viajes/semana en total</div>`;
+
+    const operacionHtml = u.configPorDia ? porDiaGridHtml : `
       <div class="three-col">
         <div class="field-group" style="margin-bottom:10px">
           <label>Días op/semana</label>
@@ -1690,7 +1882,96 @@ function renderUnidades() {
           <input type="number" value="${viajesSem}" readonly style="background:#f0f9ff;color:#0369a1;font-weight:600;border-color:#bfdbfe">
           <div class="fi-auto">Calculado automáticamente</div>
         </div>
+      </div>`;
+
+    el.innerHTML = `
+      <div class="uc-top">
+        <span class="uc-label">Unidad ${idx+1} — <span class="uc-tipo-badge ${tipoBadgeCls}">${u.tipoServicio}</span></span>
+        <button class="btn-del-unit" style="position:static" onclick="eliminarUnidad(${u.id})">×</button>
       </div>
+      <div class="four-col">
+        <div class="field-group" style="margin-bottom:10px">
+          <label>Tipo de servicio</label>
+          <select onchange="onUnidadChange(${u.id},'tipoServicio',this.value)">
+            <option value="FIJO" ${u.tipoServicio==='FIJO'?'selected':''}>FIJO</option>
+            <option value="COMBINADO" ${u.tipoServicio==='COMBINADO'?'selected':''}>COMBINADO</option>
+          </select>
+        </div>
+        <div class="field-group" style="margin-bottom:10px">
+          <label>Tipo de unidad</label>
+          <select onchange="onUnidadChange(${u.id},'tipo',this.value)">
+            <option value="sprinter" ${u.tipo==='sprinter'?'selected':''}>Sprinter 16 pax</option>
+            <option value="cam30" ${u.tipo==='cam30'?'selected':''}>Camión 30 pax</option>
+            <option value="cam45" ${u.tipo==='cam45'?'selected':''}>Camión 45 pax</option>
+          </select>
+        </div>
+        <div class="field-group" style="margin-bottom:10px">
+          <label>Antigüedad</label>
+          <select onchange="onUnidadChange(${u.id},'antiguedad',this.value)">
+            <option value="nueva" ${u.antiguedad==='nueva'?'selected':''}>Nueva</option>
+            <option value="3anios" ${u.antiguedad==='3anios'?'selected':''}>3 años</option>
+            <option value="5anios" ${u.antiguedad==='5anios'?'selected':''}>5 años</option>
+            <option value="10anios" ${u.antiguedad==='10anios'?'selected':''}>10 años</option>
+          </select>
+        </div>
+        <div class="field-group" style="margin-bottom:10px">
+          <label>Cantidad</label>
+          <input type="number" value="${u.cantidad}" min="1" onchange="onUnidadChange(${u.id},'cantidad',+this.value)">
+        </div>
+      </div>
+      <div class="two-col" style="margin-bottom:10px">
+        <div class="field-group" style="margin-bottom:0">
+          <label>¿Servicio escolar?</label>
+          <select onchange="onUnidadChange(${u.id},'esServicioEscolar',this.value)">
+            <option value="NO" ${(u.esServicioEscolar||'NO')==='NO'?'selected':''}>NO</option>
+            <option value="SI" ${u.esServicioEscolar==='SI'?'selected':''}>SÍ</option>
+          </select>
+        </div>
+        ${u.esServicioEscolar==='SI' ? `
+        <div class="field-group" style="margin-bottom:0">
+          <label>¿Requiere prefectura?</label>
+          <select onchange="onUnidadChange(${u.id},'requierePrefectura',this.value)">
+            <option value="NO" ${(u.requierePrefectura||'NO')==='NO'?'selected':''}>NO</option>
+            <option value="SI" ${u.requierePrefectura==='SI'?'selected':''}>SÍ</option>
+          </select>
+        </div>` : '<div></div>'}
+      </div>
+      ${u.tipoServicio==='COMBINADO' ? `
+      <div class="field-group" style="margin-bottom:12px">
+        <label>Destino combinado
+          <span style="font-size:10px;font-weight:400;color:var(--muted)">
+            ${u.combAutoset ? '— auto (basado en ruta)' : '— editado manualmente'}
+          </span>
+        </label>
+        ${u.combAutoset && u.nombreDestinoCombinado ? `
+        <div style="display:flex;gap:6px;align-items:center">
+          <input type="text" value="${escHtml(u.nombreDestinoCombinado)}" readonly
+            style="flex:1;background:#f0f9ff;color:#0369a1;font-weight:500;border-color:#bfdbfe;cursor:default">
+          <button type="button" onclick="setCombAutoset(${u.id},false)"
+            style="flex-shrink:0;background:transparent;border:1.5px solid var(--border);border-radius:6px;padding:7px 10px;font-size:11px;font-weight:600;cursor:pointer;color:var(--muted);font-family:inherit;white-space:nowrap">✎ Cambiar</button>
+        </div>` : `
+        <div class="ac-wrap" id="wrap-ucomb-${u.id}">
+          <input type="text" id="inp-ucomb-${u.id}"
+            value="${escHtml(u.nombreDestinoCombinado||'')}"
+            placeholder="Busca el punto de destino del viaje combinado..."
+            autocomplete="off"
+            oninput="debounceSearch(this,'ucomb-${u.id}')"
+            onkeydown="acKeyNav(event,'ucomb-${u.id}')">
+          <div class="ac-dropdown hidden" id="dd-ucomb-${u.id}"></div>
+        </div>`}
+      </div>` : ''}
+      <div style="display:flex;align-items:center;gap:10px;margin-top:4px;margin-bottom:6px">
+        <div class="sec-label" style="margin-top:0;margin-bottom:0;flex:1">Operación</div>
+        <label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;user-select:none;flex-shrink:0">
+          <span class="pdc-sw">
+            <input type="checkbox" ${u.configPorDia?'checked':''}
+              onchange="onUnidadChange(${u.id},'configPorDia',this.checked)">
+            <span class="pdc-slider"></span>
+          </span>
+          <span style="font-size:11px;font-weight:600;color:var(--muted)">Configuración por día</span>
+        </label>
+      </div>
+      ${operacionHtml}
       <div class="two-col">
         <div class="field-group" style="margin-bottom:10px">
           <label>Días operación anual</label>
@@ -1757,6 +2038,10 @@ function onUnidadChange(id, campo, val) {
   if (!u) return;
   u[campo] = val;
   if (campo === 'tipo') u.costoPorKm = defCostos[val];
+  if (campo === 'tipoServicio') {
+    if (val === 'COMBINADO') { u.combAutoset = true; autoSetCombinado(id); }
+    else { u.combAutoset = false; u.destinoCombinado = null; u.nombreDestinoCombinado = ''; }
+  }
   renderUnidades();
 }
 
@@ -1864,17 +2149,22 @@ function estimarCasetas(id) {
 }
 
 function eliminarUnidad(id) {
-  cotizacion.unidades = cotizacion.unidades.filter(u => u.id !== id);
+  const newArr = cotizacion.unidades.filter(u => u.id !== id);
+  cotizacion.unidades = newArr;
+  if (cotizacion.variaPorDia && cotizacion.perDia[diaActivoPaso2]) {
+    cotizacion.perDia[diaActivoPaso2].unidades = newArr;
+  }
   renderUnidades();
   validarPaso2();
 }
 
 function actualizarTotalUnidades() {
-  const t = cotizacion.unidades.reduce((s,u) => s + calcUnidad(u).facturacionMensual, 0);
+  const allU = getAllUnidades();
+  const t = allU.reduce((s,u) => s + calcUnidad(u).facturacionMensual, 0);
   const el = document.getElementById('total-unidades-val');
   if (el) el.textContent = '$' + fmtNum(t);
   const card = document.getElementById('total-unidades-card');
-  if (card) card.classList.toggle('hidden', cotizacion.unidades.length === 0);
+  if (card) card.classList.toggle('hidden', allU.length === 0);
   validarPaso2();
 }
 
@@ -1898,8 +2188,267 @@ function setIdaVuelta(val) {
   document.getElementById('iv-solo-ida').classList.toggle('active', !val);
   document.getElementById('iv-ida-vuelta').classList.toggle('active', val);
   document.getElementById('iv-note').classList.toggle('visible', val);
-  cotizacion.unidades.forEach(u => { u.kmOverride = false; });
+  getAllUnidades().forEach(u => {
+    u.kmOverride = false;
+    if (u.tipoServicio === 'COMBINADO' && u.combAutoset) autoSetCombinado(u.id);
+  });
   renderUnidades();
+}
+
+function getAllUnidades() {
+  if (cotizacion.variaPorDia) {
+    return cotizacion.diasActivos.flatMap(d =>
+      (cotizacion.perDia[d] && cotizacion.perDia[d].unidades) || []
+    );
+  }
+  return cotizacion.unidades;
+}
+
+function getAllRutas() {
+  if (cotizacion.variaPorDia) {
+    return cotizacion.diasActivos.flatMap(d =>
+      (cotizacion.perDia[d] && cotizacion.perDia[d].rutas) || []
+    );
+  }
+  return cotizacion.rutas;
+}
+
+// ════════════════════════════════════════════════════════════
+// VARÍA POR DÍA — FUNCIONES
+// ════════════════════════════════════════════════════════════
+function makeDefaultRuta() {
+  const id = rutaIdCounter++;
+  return {
+    id, nombre: 'Ruta 1',
+    puntos: { origen: null, paradas: [], destino: null },
+    nombresRuta: { origen: '', paradas: [], destino: '' },
+    distanciaKm: 0, etaTexto: ''
+  };
+}
+
+function hideDayMapLayers(dayNum) {
+  const pd = cotizacion.perDia[dayNum];
+  if (!pd) return;
+  pd.rutas.forEach(ruta => {
+    const data = mapData[ruta.id];
+    if (!data) return;
+    if (data.markers.origen)  try { mainMap.removeLayer(data.markers.origen);  } catch(e) {}
+    if (data.markers.destino) try { mainMap.removeLayer(data.markers.destino); } catch(e) {}
+    data.markers.paradas.forEach(m => { if (m) try { mainMap.removeLayer(m); } catch(e) {} });
+    if (data.polyline) try { mainMap.removeLayer(data.polyline); } catch(e) {}
+  });
+}
+
+function showDayMapLayers(dayNum) {
+  const pd = cotizacion.perDia[dayNum];
+  if (!pd) return;
+  pd.rutas.forEach(ruta => {
+    const data = mapData[ruta.id];
+    if (!data) return;
+    if (data.markers.origen)  try { data.markers.origen.addTo(mainMap);  } catch(e) {}
+    if (data.markers.destino) try { data.markers.destino.addTo(mainMap); } catch(e) {}
+    data.markers.paradas.forEach(m => { if (m) try { m.addTo(mainMap); } catch(e) {} });
+    if (data.polyline) try { data.polyline.addTo(mainMap); } catch(e) {}
+  });
+}
+
+function hideGlobalMapLayers() {
+  const rutas = cotizacion._globalRutas || [];
+  rutas.forEach(ruta => {
+    const data = mapData[ruta.id];
+    if (!data) return;
+    if (data.markers.origen)  try { mainMap.removeLayer(data.markers.origen);  } catch(e) {}
+    if (data.markers.destino) try { mainMap.removeLayer(data.markers.destino); } catch(e) {}
+    data.markers.paradas.forEach(m => { if (m) try { mainMap.removeLayer(m); } catch(e) {} });
+    if (data.polyline) try { mainMap.removeLayer(data.polyline); } catch(e) {}
+  });
+}
+
+function showGlobalMapLayers() {
+  const rutas = cotizacion._globalRutas || [];
+  rutas.forEach(ruta => {
+    const data = mapData[ruta.id];
+    if (!data) return;
+    if (data.markers.origen)  try { data.markers.origen.addTo(mainMap);  } catch(e) {}
+    if (data.markers.destino) try { data.markers.destino.addTo(mainMap); } catch(e) {}
+    data.markers.paradas.forEach(m => { if (m) try { m.addTo(mainMap); } catch(e) {} });
+    if (data.polyline) try { data.polyline.addTo(mainMap); } catch(e) {}
+  });
+}
+
+function initPerDia() {
+  cotizacion.diasActivos.forEach(dayNum => {
+    if (!cotizacion.perDia[dayNum]) {
+      cotizacion.perDia[dayNum] = { rutas: [makeDefaultRuta()], unidades: [] };
+    }
+  });
+}
+
+function setVariaPorDia(val) {
+  if (val === cotizacion.variaPorDia) return;
+  if (val) {
+    // Save global data
+    cotizacion._globalRutas = cotizacion.rutas;
+    cotizacion._globalUnidades = cotizacion.unidades;
+    cotizacion.variaPorDia = true;
+    // Hide global map layers
+    hideGlobalMapLayers();
+    // Init per-day data for each active day
+    initPerDia();
+    diaActivoPaso1 = cotizacion.diasActivos[0];
+    diaActivoPaso2 = cotizacion.diasActivos[0];
+    // Swap to first active day
+    cotizacion.rutas = cotizacion.perDia[diaActivoPaso1].rutas;
+    cotizacion.unidades = cotizacion.perDia[diaActivoPaso2].unidades;
+    rutaAbiertaId = cotizacion.rutas[0].id;
+    showDayMapLayers(diaActivoPaso1);
+  } else {
+    // Hide current day's layers
+    if (cotizacion.variaPorDia) hideDayMapLayers(diaActivoPaso1);
+    cotizacion.variaPorDia = false;
+    // Restore global data
+    cotizacion.rutas = cotizacion._globalRutas || cotizacion.rutas;
+    cotizacion.unidades = cotizacion._globalUnidades || cotizacion.unidades;
+    rutaAbiertaId = cotizacion.rutas[0] ? cotizacion.rutas[0].id : 0;
+    showGlobalMapLayers();
+  }
+  // Re-render everything for paso 1
+  const tabsPaso1 = document.getElementById('vpd-tabs-paso1');
+  if (tabsPaso1) tabsPaso1.style.display = val ? '' : 'none';
+  if (val) renderVpdTabsPaso1();
+  else {
+    const lbl = document.getElementById('sec-rutas-label');
+    if (lbl) lbl.textContent = 'Rutas del servicio';
+  }
+  renderRutas();
+  updateTotalDistChip();
+  validarPaso1();
+  if (currentStep === 2) {
+    renderVpdTabsPaso2();
+    renderUnidades();
+    validarPaso2();
+  }
+}
+
+function toggleDiaActivoGlobal(dayNum) {
+  const idx = cotizacion.diasActivos.indexOf(dayNum);
+  if (idx >= 0) {
+    if (cotizacion.diasActivos.length <= 1) return; // keep at least 1 active
+    cotizacion.diasActivos.splice(idx, 1);
+    if (cotizacion.variaPorDia) {
+      if (diaActivoPaso1 === dayNum) switchDiaPaso1(cotizacion.diasActivos[0]);
+      if (diaActivoPaso2 === dayNum) switchDiaPaso2(cotizacion.diasActivos[0]);
+    }
+  } else {
+    cotizacion.diasActivos.push(dayNum);
+    cotizacion.diasActivos.sort((a,b) => a - b);
+    if (cotizacion.variaPorDia && !cotizacion.perDia[dayNum]) {
+      cotizacion.perDia[dayNum] = { rutas: [makeDefaultRuta()], unidades: [] };
+    }
+  }
+  renderDiaChips();
+  if (cotizacion.variaPorDia) {
+    renderVpdTabsPaso1();
+    if (currentStep === 2) renderVpdTabsPaso2();
+  }
+  validarPaso1();
+}
+
+function renderDiaChips() {
+  const el = document.getElementById('dias-activos-chips');
+  if (!el) return;
+  el.innerHTML = '';
+  for (let d = 1; d <= 7; d++) {
+    const on = cotizacion.diasActivos.includes(d);
+    const chip = document.createElement('div');
+    chip.className = 'dia-chip-global' + (on ? ' on' : '');
+    chip.textContent = VPD_NOMBRES[d];
+    chip.onclick = () => toggleDiaActivoGlobal(d);
+    el.appendChild(chip);
+  }
+}
+
+function switchDiaPaso1(newDayNum) {
+  if (diaActivoPaso1 === newDayNum) return;
+  hideDayMapLayers(diaActivoPaso1);
+  diaActivoPaso1 = newDayNum;
+  cotizacion.rutas = cotizacion.perDia[newDayNum].rutas;
+  rutaAbiertaId = cotizacion.rutas[0].id;
+  showDayMapLayers(newDayNum);
+  // Fit map bounds
+  const pts = [];
+  cotizacion.rutas.forEach(r => {
+    if (r.puntos.origen) pts.push(r.puntos.origen);
+    r.puntos.paradas.forEach(p => { if (p) pts.push(p); });
+    if (r.puntos.destino) pts.push(r.puntos.destino);
+  });
+  if (pts.length >= 2 && mainMap) {
+    try { mainMap.fitBounds(L.latLngBounds(pts).pad(0.2)); } catch(e) {}
+  }
+  renderVpdTabsPaso1();
+  renderRutas();
+  updateTotalDistChip();
+  validarPaso1();
+}
+
+function switchDiaPaso2(newDayNum) {
+  if (diaActivoPaso2 === newDayNum) return;
+  diaActivoPaso2 = newDayNum;
+  cotizacion.unidades = cotizacion.perDia[newDayNum].unidades;
+  renderUnidades();
+  validarPaso2();
+}
+
+function copiarConfigDia(fromDay) {
+  const toDay = diaActivoPaso2;
+  if (fromDay === toDay || !cotizacion.perDia[fromDay]) return;
+  const copia = JSON.parse(JSON.stringify(cotizacion.perDia[fromDay].unidades,
+    (key, val) => key === '_desgloseEst' ? undefined : val));
+  copia.forEach(u => { u.id = unidadCount++; });
+  cotizacion.perDia[toDay].unidades = copia;
+  cotizacion.unidades = copia;
+  renderUnidades();
+  validarPaso2();
+}
+
+function dayHasRoute(dayNum) {
+  const pd = cotizacion.perDia[dayNum];
+  return pd && pd.rutas.some(r => r.puntos.origen && r.puntos.destino);
+}
+
+function renderVpdTabsPaso1() {
+  const el = document.getElementById('vpd-tabs-paso1');
+  if (!el || !cotizacion.variaPorDia) return;
+  el.style.display = '';
+  const tabsHtml = cotizacion.diasActivos.map(d => {
+    const complete = dayHasRoute(d);
+    return `<button class="vpd-tab${d === diaActivoPaso1 ? ' active' : ''}${!complete ? ' incomplete' : ''}" onclick="switchDiaPaso1(${d})">${VPD_NOMBRES[d]}</button>`;
+  }).join('');
+  el.innerHTML = `<div class="vpd-tabs">${tabsHtml}</div>`;
+  // Update sec-rutas-label
+  const lbl = document.getElementById('sec-rutas-label');
+  if (lbl) lbl.textContent = 'Rutas — ' + VPD_NOMBRES[diaActivoPaso1];
+}
+
+function renderVpdTabsPaso2() {
+  const el = document.getElementById('vpd-tabs-paso2');
+  if (!el) return;
+  if (!cotizacion.variaPorDia) { el.innerHTML = ''; return; }
+  const tabsHtml = cotizacion.diasActivos.map(d => {
+    const hasUnits = cotizacion.perDia[d] && cotizacion.perDia[d].unidades.length > 0;
+    return `<button class="vpd-tab${d === diaActivoPaso2 ? ' active' : ''}${!hasUnits ? ' incomplete' : ''}" onclick="switchDiaPaso2(${d})">${VPD_NOMBRES[d]}</button>`;
+  }).join('');
+  // Build the "copy from day" selector (only show if there are other days with units)
+  const otrosDias = cotizacion.diasActivos.filter(d => d !== diaActivoPaso2 && cotizacion.perDia[d] && cotizacion.perDia[d].unidades.length > 0);
+  const copyRow = otrosDias.length > 0 ? `
+    <div class="vpd-copy-row">
+      <label>Copiar config de:</label>
+      <select id="vpd-copy-select">
+        ${otrosDias.map(d => `<option value="${d}">${VPD_NOMBRES[d]}</option>`).join('')}
+      </select>
+      <button class="vpd-copy-btn" onclick="copiarConfigDia(+document.getElementById('vpd-copy-select').value)">Copiar</button>
+    </div>` : '';
+  el.innerHTML = `<div class="vpd-tabs">${tabsHtml}</div>${copyRow}`;
 }
 
 // ════════════════════════════════════════════════════════════
@@ -1949,50 +2498,98 @@ function generarCotizacion() {
   goToStep(4);
 }
 
+function buildAllPts(ruta) {
+  const pts = [];
+  if (ruta.puntos.origen) pts.push(ruta.puntos.origen);
+  ruta.puntos.paradas.forEach(p => { if (p) pts.push(p); });
+  if (ruta.puntos.destino) pts.push(ruta.puntos.destino);
+  return pts;
+}
+
+function buildRutaReportDiv(ruta, idx) {
+  const color = ROUTE_COLORS[idx % ROUTE_COLORS.length];
+  const div = document.createElement('div'); div.style.marginBottom = '14px';
+  const label = document.createElement('div'); label.className = 'route-name-label'; label.style.color = color; label.textContent = ruta.nombre; div.appendChild(label);
+  const visual = document.createElement('div'); visual.className = 'route-visual';
+  const addPt = (t, cls) => { const s = document.createElement('span'); s.className = 'route-pt ' + cls; s.textContent = t; visual.appendChild(s); };
+  let segIdx = 0;
+  const addArr = () => {
+    const w = document.createElement('span'); w.className = 'route-arrow-wrap';
+    w.innerHTML = '<span class="route-arrow">→</span><span class="seg-eta-label" id="seg-' + ruta.id + '-' + segIdx + '">···</span>';
+    segIdx++; visual.appendChild(w);
+  };
+  addPt(ruta.nombresRuta.origen || 'Origen', 'origin');
+  ruta.nombresRuta.paradas.forEach(p => { if (p) { addArr(); addPt(p, 'waypoint'); } });
+  addArr(); addPt(ruta.nombresRuta.destino || 'Destino', 'destination');
+  div.appendChild(visual);
+  if (ruta.distanciaKm > 0) {
+    const pill = document.createElement('span'); pill.className = 'badge-pill badge-gold'; pill.style.marginBottom = '4px';
+    let t = '↔ ' + ruta.distanciaKm.toFixed(1) + ' km';
+    if (ruta.etaTexto && ruta.etaTexto !== 'calculando...') t += '  ·  ⏱ ' + ruta.etaTexto;
+    pill.textContent = t; div.appendChild(pill);
+  }
+  return div;
+}
+
 function renderCotizacion() {
   const c = cotizacion, op = c.operacion;
   document.getElementById('r-folio').textContent = c.folio;
   document.getElementById('r-cliente').textContent = c.cliente || 'Cliente sin nombre';
   document.getElementById('r-proyecto').textContent = c.proyecto || 'Proyecto sin nombre';
   document.getElementById('r-fecha').textContent = 'Emisión: ' + new Date().toLocaleDateString('es-MX',{year:'numeric',month:'long',day:'numeric'});
-  const prefEl = document.getElementById('r-prefectura');
-  if (prefEl) { prefEl.textContent = c.prefectura||'NO'; prefEl.className = 'rh-mv'+(c.prefectura==='SI'?' rh-prefectura-si':''); }
 
-  const totalKm = totalKmRutas();
+  // Use all units/routes across all active days in advanced mode
+  const reportUnidades = getAllUnidades();
+  const reportRutas    = getAllRutas();
+
+  // Build escolar/prefectura summary for header meta
+  const metaEl = document.getElementById('r-meta-escolar');
+  if (metaEl) {
+    const escolares = reportUnidades.filter(u => u.esServicioEscolar === 'SI');
+    const conPref   = escolares.filter(u => u.requierePrefectura === 'SI');
+    let metaHtml = '';
+    if (c.variaPorDia) metaHtml += `<div class="rh-meta-item"><span class="rh-ml">Modo</span><span class="rh-mv" style="color:var(--gold)">Varía por día</span></div>`;
+    if (escolares.length > 0) metaHtml += `<div class="rh-meta-item"><span class="rh-ml">Escolar</span><span class="rh-mv" style="color:#86efac">${escolares.length} unid.</span></div>`;
+    if (conPref.length > 0)   metaHtml += `<div class="rh-meta-item"><span class="rh-ml">Prefectura</span><span class="rh-mv rh-prefectura-si">${conPref.length} unid.</span></div>`;
+    metaEl.innerHTML = metaHtml;
+  }
+
+  const totalKm = reportRutas.reduce((a, r) => a + r.distanciaKm, 0);
 
   const rutasContainer = document.getElementById('r-rutas-container');
   rutasContainer.innerHTML = '';
-  c.rutas.forEach((ruta, idx) => {
-    const color = ROUTE_COLORS[idx % ROUTE_COLORS.length];
-    const div = document.createElement('div'); div.style.marginBottom='14px';
-    const label = document.createElement('div'); label.className='route-name-label'; label.style.color=color; label.textContent=ruta.nombre; div.appendChild(label);
-    const visual = document.createElement('div'); visual.className='route-visual';
-    const addPt=(t,cls)=>{const s=document.createElement('span');s.className='route-pt '+cls;s.textContent=t;visual.appendChild(s);};
-    let segIdx=0;
-    const addArr=()=>{
-      const w=document.createElement('span'); w.className='route-arrow-wrap';
-      w.innerHTML='<span class="route-arrow">→</span><span class="seg-eta-label" id="seg-'+ruta.id+'-'+segIdx+'">···</span>';
-      segIdx++; visual.appendChild(w);
-    };
-    addPt(ruta.nombresRuta.origen||'Origen','origin');
-    ruta.nombresRuta.paradas.forEach(p=>{if(p){addArr();addPt(p,'waypoint');}});
-    addArr(); addPt(ruta.nombresRuta.destino||'Destino','destination'); div.appendChild(visual);
-    if (ruta.distanciaKm>0){const pill=document.createElement('span');pill.className='badge-pill badge-gold';pill.style.marginBottom='4px';let t='↔ '+ruta.distanciaKm.toFixed(1)+' km';if(ruta.etaTexto&&ruta.etaTexto!=='calculando...')t+='  ·  ⏱ '+ruta.etaTexto;pill.textContent=t;div.appendChild(pill);}
-    rutasContainer.appendChild(div);
-    // Segment ETAs async
-    const allPts=[];
-    if(ruta.puntos.origen) allPts.push(ruta.puntos.origen);
-    ruta.puntos.paradas.forEach(p=>{if(p) allPts.push(p);});
-    if(ruta.puntos.destino) allPts.push(ruta.puntos.destino);
-    if(allPts.length>=2) calcularSegmentETAs(ruta.id, allPts);
-  });
+  // In advanced mode: show routes per day
+  if (c.variaPorDia) {
+    c.diasActivos.forEach(dayNum => {
+      const pd = c.perDia[dayNum];
+      if (!pd || !pd.rutas.length) return;
+      const dayHdr = document.createElement('div');
+      dayHdr.style.cssText = 'font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--navy);margin-bottom:6px;margin-top:10px;';
+      dayHdr.textContent = '— ' + VPD_NOMBRES[dayNum];
+      rutasContainer.appendChild(dayHdr);
+      pd.rutas.forEach((ruta, idx) => {
+        rutasContainer.appendChild(buildRutaReportDiv(ruta, idx));
+        calcularSegmentETAs(ruta.id, buildAllPts(ruta));
+      });
+    });
+  } else {
+    c.rutas.forEach((ruta, idx) => {
+      rutasContainer.appendChild(buildRutaReportDiv(ruta, idx));
+      const pts = buildAllPts(ruta);
+      if (pts.length >= 2) calcularSegmentETAs(ruta.id, pts);
+    });
+  }
 
   document.getElementById('r-periodo').textContent = fmtDate(op.fechaInicio) + ' – ' + fmtDate(op.fechaFin);
   // Días / semana
-  const diasVals = c.unidades.map(u => u.diasOperacionSemana);
-  const minDias = Math.min(...diasVals), maxDias = Math.max(...diasVals);
-  document.getElementById('r-dias-semana').textContent =
-    minDias === maxDias ? minDias + ' días' : minDias + '-' + maxDias + ' días';
+  const diasVals = reportUnidades.map(u => u.diasOperacionSemana);
+  if (diasVals.length > 0) {
+    const minDias = Math.min(...diasVals), maxDias = Math.max(...diasVals);
+    document.getElementById('r-dias-semana').textContent =
+      minDias === maxDias ? minDias + ' días' : minDias + '-' + maxDias + ' días';
+  } else {
+    document.getElementById('r-dias-semana').textContent = c.diasActivos.length + ' días';
+  }
 
   // Total días activos
   if (op.fechaInicio && op.fechaFin) {
@@ -2019,11 +2616,22 @@ function renderCotizacion() {
   const opBody = document.getElementById('r-op-body');
   if (opBody) {
     opBody.innerHTML = '';
-    c.unidades.forEach(u => {
+    reportUnidades.forEach(u => {
       const calc = calcUnidad(u);
-      const badge = u.tipoServicio==='FIJO' ? '<span style="font-weight:700;font-size:11px;padding:2px 7px;border-radius:10px;background:#dbeafe;color:#1e40af">FIJO</span>' : '<span style="font-weight:700;font-size:11px;padding:2px 7px;border-radius:10px;background:#fce7f3;color:#9d174d">ESPECIAL</span>';
+      const srvColor = u.tipoServicio==='FIJO' ? 'background:#dbeafe;color:#1e40af' : 'background:#fef3c7;color:#92400e';
+      const badge = `<span style="font-weight:700;font-size:11px;padding:2px 7px;border-radius:10px;${srvColor}">${u.tipoServicio||'FIJO'}</span>`
+        + (u.esServicioEscolar==='SI' ? '<div style="margin-top:2px"><span style="font-size:9px;font-weight:700;padding:1px 5px;border-radius:8px;background:#dcfce7;color:#166534">ESCOLAR</span>'
+            + (u.requierePrefectura==='SI' ? ' <span style="font-size:9px;font-weight:700;padding:1px 5px;border-radius:8px;background:#fef3c7;color:#92400e">PREFECTURA</span>' : '') + '</div>' : '');
+      const antigLabel = antiguedadLabels[u.antiguedad] || u.antiguedad || '—';
+      const dias = u.diasPorDia || defaultDiasPorDia();
+      const diasDisp = u.configPorDia ? dias.filter(d=>d.activo).length+' (var.)' : u.diasOperacionSemana;
+      const viajesDisp = u.configPorDia
+        ? (dias.filter(d=>d.activo).reduce((s,d)=>s+d.viajes,0) / Math.max(1,dias.filter(d=>d.activo).length)).toFixed(1)+' (prom.)'
+        : u.viajesDiarios.toFixed(2);
+      const combHtml = u.tipoServicio==='COMBINADO'&&u.nombreDestinoCombinado
+        ? `<div style="font-size:10px;color:#92400e;margin-top:2px">↩ ${escHtml(u.nombreDestinoCombinado)}</div>` : '';
       const tr = document.createElement('tr');
-      tr.innerHTML = `<td>${badge}</td><td style="max-width:160px;white-space:normal">${escHtml(u.caracteristicas)||'—'}</td><td style="white-space:nowrap">${tipoLabels[u.tipo]||u.tipo}</td><td style="text-align:center">${u.cantidad}</td><td style="text-align:center">${u.diasOperacionSemana}</td><td style="text-align:center">${u.viajesDiarios.toFixed(2)}</td><td style="text-align:center;font-weight:600;color:#0369a1">${calc.viajesSemanales.toFixed(2)}</td><td style="text-align:center">${u.diasOperacionAnual}</td><td style="text-align:right;font-weight:600">${fmtNum(u.kmTotalesMes)}</td><td style="text-align:center">${u.kmMuertoIda + u.kmMuertoVuelta}</td><td style="text-align:center">${u.porcentajeVacio}%</td>`;
+      tr.innerHTML = `<td>${badge}${combHtml}</td><td style="white-space:nowrap">${tipoLabels[u.tipo]||u.tipo}</td><td style="white-space:nowrap;font-size:11px">${antigLabel}</td><td style="text-align:center">${u.cantidad}</td><td style="text-align:center">${diasDisp}</td><td style="text-align:center">${viajesDisp}</td><td style="text-align:center;font-weight:600;color:#0369a1">${calc.viajesSemanales.toFixed(2)}</td><td style="text-align:center">${u.diasOperacionAnual}</td><td style="text-align:right;font-weight:600">${fmtNum(u.kmTotalesMes)}</td><td style="text-align:center">${u.kmMuertoIda + u.kmMuertoVuelta}</td><td style="text-align:center">${u.porcentajeVacio}%</td>`;
       opBody.appendChild(tr);
     });
   }
@@ -2034,10 +2642,13 @@ function renderCotizacion() {
   if (factBody) {
     factBody.innerHTML = '';
     let sumFact=0, sumSrv=0, sumCmb=0;
-    c.unidades.forEach(u => {
+    reportUnidades.forEach(u => {
       const calc = calcUnidad(u);
       sumFact+=calc.facturacionMensual; sumSrv+=calc.facturacionMensualServicio; sumCmb+=calc.facturacionMensualCombustible;
-      const badge = u.tipoServicio==='FIJO' ? '<span style="font-weight:700;font-size:11px;padding:2px 7px;border-radius:10px;background:#dbeafe;color:#1e40af">FIJO</span>' : '<span style="font-weight:700;font-size:11px;padding:2px 7px;border-radius:10px;background:#fce7f3;color:#9d174d">ESPECIAL</span>';
+      const srvColor2 = u.tipoServicio==='FIJO' ? 'background:#dbeafe;color:#1e40af' : 'background:#fef3c7;color:#92400e';
+      const badge = `<span style="font-weight:700;font-size:11px;padding:2px 7px;border-radius:10px;${srvColor2}">${u.tipoServicio||'FIJO'}</span>`
+        + (u.esServicioEscolar==='SI' ? ' <span style="font-size:9px;font-weight:700;padding:1px 5px;border-radius:8px;background:#dcfce7;color:#166534">ESC</span>' : '')
+        + (u.requierePrefectura==='SI' ? ' <span style="font-size:9px;font-weight:700;padding:1px 5px;border-radius:8px;background:#fef3c7;color:#92400e">PREF</span>' : '');
       const tr = document.createElement('tr');
       tr.innerHTML = `<td>${badge}</td><td style="text-align:right">$${fmtNum(u.casetasMensuales)}</td><td style="text-align:right;font-weight:700;color:var(--green)">$${fmtNum(calc.facturacionMensual)}</td><td style="text-align:right">$${fmtNum(calc.facturacionMensualServicio)}</td><td style="text-align:right">$${fmtNum(calc.facturacionMensualCombustible)}</td><td style="text-align:right">$${fmtNum(calc.precioServicioKm)}</td><td style="text-align:right">$${fmtNum(u.precioCombustibleKm)}</td><td style="text-align:right">$${fmtNum(calc.precioKmVariableConCasetas)}</td><td style="text-align:right">$${fmtNum(calc.precioKmVariableSinCasetas)}</td><td style="text-align:right">$${fmtNum(calc.precioViajeVariableConCasetas)}</td><td style="text-align:right">$${fmtNum(calc.precioViajeVariableSinCasetas)}</td>`;
       factBody.appendChild(tr);
@@ -2089,7 +2700,7 @@ function initMiniMap() {
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom:19}).addTo(miniMapInst);
 
   const allPts = [];
-  cotizacion.rutas.forEach((ruta, idx) => {
+  getAllRutas().forEach((ruta, idx) => {
     const color = ROUTE_COLORS[idx % ROUTE_COLORS.length];
     const pts = [];
     if (ruta.puntos.origen) {
@@ -2188,24 +2799,25 @@ function descargarPDF() {
   // SECCIÓN: RUTAS
   secTitle(doc, 'RESUMEN DE RUTAS', margin, y); y += 9;
 
-  const totalKm = totalKmRutas();
-  cotizacion.rutas.forEach((ruta, idx) => {
+  const pdfRutas = getAllRutas();
+  const totalKm = pdfRutas.reduce((a, r) => a + r.distanciaKm, 0);
+  pdfRutas.forEach((ruta, idx) => {
     if (y > 150) { doc.addPage(); y = 20; }
     doc.setFontSize(9); doc.setFont('helvetica','bold'); doc.setTextColor(15, 45, 82);
     doc.text(ruta.nombre + ':', margin, y); y += 6;
     y = drawRutaDiagram(doc, ruta, margin, y, cw);
-    if (idx < cotizacion.rutas.length - 1) {
-      y += 4; // gap between routes
+    if (idx < pdfRutas.length - 1) {
+      y += 4;
       if (y > 120) { doc.addPage(); y = 20; }
     }
   });
 
   // Total distance badge
-  if (cotizacion.rutas.length > 1) {
+  if (pdfRutas.length > 1) {
     doc.setFillColor(15, 45, 82);
     doc.roundedRect(margin, y, 60, 7, 2, 2, 'F');
     doc.setFontSize(8.5); doc.setFont('helvetica','bold'); doc.setTextColor(255, 255, 255);
-    doc.text('Total: ' + totalKm.toFixed(1) + ' km (' + cotizacion.rutas.length + ' rutas)', margin+3, y+4.8);
+    doc.text('Total: ' + totalKm.toFixed(1) + ' km (' + pdfRutas.length + ' rutas)', margin+3, y+4.8);
     y += 12;
   }
 
@@ -2236,13 +2848,14 @@ function descargarPDF() {
     startY:y,
     head:[
       [
-        {content:'Identificación',colSpan:4,styles:{fillColor:[15,45,82],textColor:[255,255,255],fontStyle:'bold',fontSize:7,halign:'center'}},
+        {content:'Identificación',colSpan:5,styles:{fillColor:[15,45,82],textColor:[255,255,255],fontStyle:'bold',fontSize:7,halign:'center'}},
         {content:'Operación y costos',colSpan:8,styles:{fillColor:[3,105,161],textColor:[255,255,255],fontStyle:'bold',fontSize:7,halign:'center'}}
       ],
       [
         {content:'Tipo serv.',styles:{fillColor:[226,232,240],textColor:[15,45,82],fontStyle:'bold',fontSize:7}},
         {content:'Características',styles:{fillColor:[226,232,240],textColor:[15,45,82],fontStyle:'bold',fontSize:7}},
         {content:'Tipo unidad',styles:{fillColor:[226,232,240],textColor:[15,45,82],fontStyle:'bold',fontSize:7}},
+        {content:'Antigüedad',styles:{fillColor:[226,232,240],textColor:[15,45,82],fontStyle:'bold',fontSize:7}},
         {content:'Cant.',styles:{fillColor:[226,232,240],textColor:[15,45,82],fontStyle:'bold',fontSize:7,halign:'center'}},
         {content:'Días/sem',styles:{fillColor:[219,234,254],textColor:[30,64,175],fontStyle:'bold',fontSize:7,halign:'center'}},
         {content:'Viajes/día',styles:{fillColor:[219,234,254],textColor:[30,64,175],fontStyle:'bold',fontSize:7,halign:'center'}},
@@ -2254,10 +2867,10 @@ function descargarPDF() {
         {content:'Casetas/mes',styles:{fillColor:[219,234,254],textColor:[30,64,175],fontStyle:'bold',fontSize:7,halign:'right'}}
       ]
     ],
-    body:cotizacion.unidades.map((u,i)=>{const c=calcUnidad(u);return['U'+(i+1)+' '+u.tipoServicio,u.caracteristicas||'—',tipoLabels[u.tipo]||u.tipo,String(u.cantidad),String(u.diasOperacionSemana),u.viajesDiarios.toFixed(2),c.viajesSemanales.toFixed(2),String(u.diasOperacionAnual),fmtNum(u.kmTotalesMes),String(u.kmMuertoIda + u.kmMuertoVuelta),u.porcentajeVacio+'%','$'+fmtNum(u.casetasMensuales)]}),
+    body:getAllUnidades().map((u,i)=>{const c=calcUnidad(u);const pdfDias=u.diasPorDia||defaultDiasPorDia();const diasPdf=u.configPorDia?pdfDias.filter(d=>d.activo).length+' (var.)':String(u.diasOperacionSemana);const viajesPdf=u.configPorDia?(pdfDias.filter(d=>d.activo).reduce((s,d)=>s+d.viajes,0)/Math.max(1,pdfDias.filter(d=>d.activo).length)).toFixed(1)+' (p.)':u.viajesDiarios.toFixed(2);const combStr=u.tipoServicio==='COMBINADO'&&u.nombreDestinoCombinado?'\n↩ '+u.nombreDestinoCombinado:'';const escStr=(u.esServicioEscolar==='SI'?'\n[ESCOLAR'+(u.requierePrefectura==='SI'?' + PREF.':'')+']':'');return['U'+(i+1)+' '+u.tipoServicio+escStr,(u.caracteristicas||'—')+combStr,tipoLabels[u.tipo]||u.tipo,antiguedadLabels[u.antiguedad]||'—',String(u.cantidad),diasPdf,viajesPdf,c.viajesSemanales.toFixed(2),String(u.diasOperacionAnual),fmtNum(u.kmTotalesMes),String(u.kmMuertoIda + u.kmMuertoVuelta),u.porcentajeVacio+'%','$'+fmtNum(u.casetasMensuales)]}),
     styles:{font:'helvetica',fontSize:7.5,cellPadding:2.5,textColor:[30,41,59]},
     alternateRowStyles:{fillColor:[240,249,255]},
-    columnStyles:{0:{cellWidth:20},1:{cellWidth:32},2:{cellWidth:28},3:{halign:'center',cellWidth:12},4:{halign:'center',cellWidth:14},5:{halign:'center',cellWidth:14},6:{halign:'center',cellWidth:14,fontStyle:'bold'},7:{halign:'center',cellWidth:16},8:{halign:'right',cellWidth:18},9:{halign:'center',cellWidth:16},10:{halign:'center',cellWidth:12},11:{halign:'right',cellWidth:22}},
+    columnStyles:{0:{cellWidth:18},1:{cellWidth:28},2:{cellWidth:24},3:{cellWidth:14},4:{halign:'center',cellWidth:10},5:{halign:'center',cellWidth:12},6:{halign:'center',cellWidth:12},7:{halign:'center',cellWidth:13,fontStyle:'bold'},8:{halign:'center',cellWidth:14},9:{halign:'right',cellWidth:16},10:{halign:'center',cellWidth:14},11:{halign:'center',cellWidth:10},12:{halign:'right',cellWidth:18}},
     margin:{left:margin,right:margin},tableLineColor:[220,225,230],tableLineWidth:.2
   });
   y=doc.lastAutoTable.finalY+8;
@@ -2266,7 +2879,7 @@ function descargarPDF() {
   if(y>170){doc.addPage();y=20;}
   secTitle(doc,'FACTURACION POR UNIDAD',margin,y);y+=6;
   let pSumF=0,pSumS=0,pSumC=0;
-  const factRowsPDF=cotizacion.unidades.map((u,i)=>{const c=calcUnidad(u);pSumF+=c.facturacionMensual;pSumS+=c.facturacionMensualServicio;pSumC+=c.facturacionMensualCombustible;return['U'+(i+1)+' '+u.tipoServicio,'$'+fmtNum(c.facturacionMensual),'$'+fmtNum(c.facturacionMensualServicio),'$'+fmtNum(c.facturacionMensualCombustible),'$'+fmtNum(c.precioServicioKm),'$'+fmtNum(u.precioCombustibleKm),'$'+fmtNum(c.precioKmVariableConCasetas),'$'+fmtNum(c.precioKmVariableSinCasetas),'$'+fmtNum(c.precioViajeVariableConCasetas),'$'+fmtNum(c.precioViajeVariableSinCasetas)];});
+  const factRowsPDF=getAllUnidades().map((u,i)=>{const c=calcUnidad(u);pSumF+=c.facturacionMensual;pSumS+=c.facturacionMensualServicio;pSumC+=c.facturacionMensualCombustible;return['U'+(i+1)+' '+u.tipoServicio,'$'+fmtNum(c.facturacionMensual),'$'+fmtNum(c.facturacionMensualServicio),'$'+fmtNum(c.facturacionMensualCombustible),'$'+fmtNum(c.precioServicioKm),'$'+fmtNum(u.precioCombustibleKm),'$'+fmtNum(c.precioKmVariableConCasetas),'$'+fmtNum(c.precioKmVariableSinCasetas),'$'+fmtNum(c.precioViajeVariableConCasetas),'$'+fmtNum(c.precioViajeVariableSinCasetas)];});
   factRowsPDF.push(['TOTAL','$'+fmtNum(pSumF),'$'+fmtNum(pSumS),'$'+fmtNum(pSumC),'—','—','—','—','—','—']);
   doc.autoTable({
     startY:y,
@@ -2435,9 +3048,107 @@ function fmtDate(str) {
 // ════════════════════════════════════════════════════════════
 // INIT
 // ════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════
+// TIME PICKER
+// ════════════════════════════════════════════════════════════
+const tpState = {};
+
+function tpInit(tipo, defaultVal) {
+  const parts = (defaultVal || '00:00').split(':');
+  tpState[tipo] = { h: (parts[0] || '00').padStart(2, '0'), m: (parts[1] || '00').padStart(2, '0') };
+  tpRenderCols(tipo);
+  tpUpdateDisplay(tipo);
+}
+
+function tpUpdateDisplay(tipo) {
+  const disp = document.getElementById('tp-disp-' + tipo);
+  const inp  = document.getElementById('f-' + tipo);
+  if (!disp || !tpState[tipo]) return;
+  const timeStr = tpState[tipo].h + ':' + tpState[tipo].m;
+  disp.textContent = timeStr;
+  disp.className = 'tp-trigger-time';
+  if (inp) inp.value = timeStr;
+}
+
+function tpRenderCols(tipo) {
+  const hCol = document.getElementById('tp-col-h-' + tipo);
+  const mCol = document.getElementById('tp-col-m-' + tipo);
+  if (!hCol || !mCol) return;
+  const cur = tpState[tipo] || { h: '00', m: '00' };
+  hCol.innerHTML = '<div class="tp-col-hdr">Hora</div>';
+  for (let h = 0; h <= 23; h++) {
+    const s = String(h).padStart(2, '0');
+    const d = document.createElement('div');
+    d.className = 'tp-item' + (s === cur.h ? ' tp-sel' : '');
+    d.textContent = s;
+    d.onclick = () => tpSelect(tipo, 'h', s);
+    hCol.appendChild(d);
+  }
+  mCol.innerHTML = '<div class="tp-col-hdr">Min</div>';
+  for (let m = 0; m <= 59; m += 5) {
+    const s = String(m).padStart(2, '0');
+    const d = document.createElement('div');
+    d.className = 'tp-item' + (s === cur.m ? ' tp-sel' : '');
+    d.textContent = s;
+    d.onclick = () => tpSelect(tipo, 'm', s);
+    mCol.appendChild(d);
+  }
+}
+
+function tpSelect(tipo, part, val) {
+  if (!tpState[tipo]) tpState[tipo] = { h: '00', m: '00' };
+  tpState[tipo][part] = val;
+  tpUpdateDisplay(tipo);
+  onHoraChange(tipo, tpState[tipo].h + ':' + tpState[tipo].m);
+  tpRenderCols(tipo);
+}
+
+function tpToggle(tipo) {
+  const wrap = document.getElementById('tp-wrap-' + tipo);
+  if (!wrap) return;
+  const isOpen = wrap.classList.contains('tp-open');
+  document.querySelectorAll('.tp-wrap.tp-open').forEach(w => w.classList.remove('tp-open'));
+  if (!isOpen) {
+    wrap.classList.add('tp-open');
+    setTimeout(() => {
+      const hSel = document.querySelector('#tp-col-h-' + tipo + ' .tp-sel');
+      const mSel = document.querySelector('#tp-col-m-' + tipo + ' .tp-sel');
+      if (hSel) hSel.scrollIntoView({ block: 'center' });
+      if (mSel) mSel.scrollIntoView({ block: 'center' });
+    }, 30);
+  }
+}
+
+document.addEventListener('click', e => {
+  document.querySelectorAll('.tp-wrap.tp-open').forEach(w => {
+    if (!w.contains(e.target)) w.classList.remove('tp-open');
+  });
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.tp-wrap.tp-open').forEach(w => w.classList.remove('tp-open'));
+  }
+});
+
 document.addEventListener('DOMContentLoaded', () => {
   initMainMap();
   renderRutas();
+  renderDiaChips();
+  // Auto-fill dates: today → one month later
+  const hoy = new Date();
+  const fin = new Date(hoy);
+  fin.setMonth(fin.getMonth() + 1);
+  const toISO = d => d.toISOString().slice(0, 10);
+  const isoHoy = toISO(hoy);
+  const isoFin = toISO(fin);
+  document.getElementById('f-inicio').value = isoHoy;
+  document.getElementById('f-fin').value    = isoFin;
+  cotizacion.operacion.fechaInicio = isoHoy;
+  cotizacion.operacion.fechaFin    = isoFin;
+  validarPaso3();
+  // Init time pickers with defaults
+  tpInit('entrada', '07:00');
+  tpInit('salida', '18:00');
 });
 
 // ════════════════════════════════════════════════════════════
@@ -2563,6 +3274,9 @@ async function verCotizacion(id, btn) {
     cotizacion.prefectura  = saved.prefectura   || 'NO';
     cotizacion.rutas       = Array.isArray(saved.rutas)    ? saved.rutas    : [];
     cotizacion.unidades    = Array.isArray(saved.unidades) ? saved.unidades : [];
+    cotizacion.diasActivos = Array.isArray(saved.diasActivos) ? saved.diasActivos : [1,2,3,4,5];
+    cotizacion.variaPorDia = saved.variaPorDia  || false;
+    cotizacion.perDia      = saved.perDia       || {};
 
     // Deep-merge operacion so no sub-field is lost
     Object.assign(cotizacion.operacion, {
